@@ -1,0 +1,329 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --bg: #F6F7F8;
+  --surface: #FFFFFF;
+  --border: #E2E5E8;
+  --border-strong: #C7CCD1;
+  --ink: #12181D;
+  --ink-soft: #5B6670;
+  --ink-faint: #8B939A;
+  --accent-normal: #3E6E71;
+  --accent-flag: #B5502E;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--ink); }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--accent-normal);
+  outline-offset: 2px;
+}
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 56px 24px 40px;
+}
+
+/* ---------- Masthead ---------- */
+.masthead { margin-bottom: 40px; }
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 18px;
+}
+
+.masthead h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+}
+
+.lede {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 46ch;
+}
+
+.lede strong {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+/* ---------- Upload dropzone ---------- */
+.dropzone {
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 56px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  background: var(--surface);
+}
+
+.dropzone:hover,
+.dropzone.dragover {
+  border-color: var(--accent-normal);
+  background: #FAFBFB;
+}
+
+.dropzone-icon {
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.dropzone-text {
+  font-size: 15px;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.link-text {
+  color: var(--accent-normal);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dropzone-hint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+/* ---------- Analysis stage ---------- */
+.analysis-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.image-frame {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+  line-height: 0;
+}
+
+.image-frame img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-normal), transparent);
+  box-shadow: 0 0 12px 1px rgba(62, 110, 113, 0.6);
+  opacity: 0;
+}
+
+.scan-line.scanning {
+  opacity: 1;
+  animation: scan-sweep 1.6s ease-in-out infinite;
+}
+
+@keyframes scan-sweep {
+  0%   { top: 0%; }
+  50%  { top: 98%; }
+  100% { top: 0%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-line.scanning {
+    animation: none;
+    opacity: 0.7;
+    top: 50%;
+  }
+}
+
+/* ---------- Result panel ---------- */
+.result-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  background: var(--surface);
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-pending .pending-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.result-complete {
+  width: 100%;
+  text-align: left;
+}
+
+.result-label {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.result-label.is-normal { color: var(--accent-normal); }
+.result-label.is-flagged { color: var(--accent-flag); }
+
+.result-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+
+.threshold-scale { margin-bottom: 16px; }
+
+.scale-track {
+  position: relative;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+
+.scale-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.threshold-marker .marker-tick {
+  display: block;
+  width: 2px;
+  height: 14px;
+  background: var(--ink);
+  transform: translateY(-5px);
+}
+
+.score-marker .marker-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--border-strong);
+  transition: left 0.4s ease;
+}
+
+.scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.scale-labels-threshold {
+  color: var(--ink-soft);
+}
+
+.result-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.result-error .error-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--accent-flag);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.error-detail {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ---------- Reset button ---------- */
+.reset-button {
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.reset-button:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* ---------- Footer ---------- */
+.disclaimer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.disclaimer p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+.disclaimer a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .page { padding: 40px 18px 32px; }
+  .masthead h1 { font-size: 27px; }
+}
